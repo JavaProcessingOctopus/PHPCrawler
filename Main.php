@@ -32,21 +32,19 @@
 	}
 	
 	function separator($char) {
-		return ctype_space($char) || ctype_punct($char);
+		return ctype_space($char) || ctype_punct($char) || $char == "";
 	}
 
 	// Step 1 - Get page
 	$htmlRaw = getWebPage('php.net');
 	//echo $htmlRaw;
-	
 	$text = strip_tags($htmlRaw);
+	
+	// Step 2 - Put all words in a word & number map
 	$map = parseToMap($text);
 	
-	print_r($map);
-	// Step 2 - Put all words in a word & number map
-	/*foreach ($html->childNodes as $element) {
-		echo "hello";
-	}*/
-	
 	// Step 3 - get top 10
+	arsort( $map );
+	$map = array_slice($map, 0, 10);
+	print_r($map);
 ?>
