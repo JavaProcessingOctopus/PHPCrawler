@@ -9,10 +9,44 @@
 		curl_close($ch);
 		return $data;
 	}	
+	
+	function parseToMap($text) {
+		$array = array();
+		
+		$currentWord = "";
+		for($i=0; $i<strlen($text); $i++) {
+			if(separator($text[$i])) {
+				if (isset($array[ $currentWord ])) {
+					$array[ $currentWord ] = $array[ $currentWord ] + 1;
+				} else {
+					$array[ $currentWord ] = 1;
+				}
+				$currentWord = "";
+			} else {
+				$currentWord = $currentWord . strtolower ( $text[$i] );
+			}
+			echo $currentWord;
+		}
+		
+		return $array;
+	}
+	
+	function separator($char) {
+		return ctype_space($char) || ctype_punct($char);
+	}
 
 	// Step 1 - Get page
-	echo getWebPage("http://php.net/");
+	$htmlRaw = getWebPage('php.net');
+	//echo $htmlRaw;
 	
+	$text = strip_tags($htmlRaw);
+	$map = parseToMap($text);
+	
+	print_r($map);
 	// Step 2 - Put all words in a word & number map
+	/*foreach ($html->childNodes as $element) {
+		echo "hello";
+	}*/
+	
 	// Step 3 - get top 10
 ?>
