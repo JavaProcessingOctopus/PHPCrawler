@@ -7,14 +7,54 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use AppBundle\Entity\GetTopEntity;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class GetTopController extends Controller {
 	/**
 	 * @Route("/getTop")
 	 */
-	public function getTopWord() {
-		$url = "http://php.net";
-		$topNumber = 10;
+	public function newAction(Request $request)
+	{
+		// create a task and give it some dummy data for this example
+		$entity = new GetTopEntity();
+		$entity->setUrl('http://php.net');
+		$entity->setTopNumber(10);
+	
+		$form = $this->createFormBuilder($entity)
+		->add('url', TextType::class)
+		->add('topNumber', NumberType::class)
+		->add('save', SubmitType::class, array('label' => 'Crawl page'))
+		->getForm();
+	
+		$form->handleRequest($request);
+	
+		if ($form->isSubmitted() && $form->isValid()) {
+			// $form->getData() holds the submitted values
+			// but, the original `$task` variable has also been updated
+			$entity = $form->getData();
+			$url = $entity->getUrl();
+			$topNumber = $entity->getTopNumber();
+	
+			// ... perform some action, such as saving the task to the database
+			// for example, if Task is a Doctrine entity, save it!
+			// $em = $this->getDoctrine()->getManager();
+			// $em->persist($task);
+			// $em->flush();
+	
+			return $this->getTopWord($url, $topNumber);
+		}
+	
+		return $this->render('getTopForm.html.twig', array(
+				'form' => $form->createView(),
+		));
+	}
+	
+	private function getTopWord($url, $topNumber) {
+		//$url = "http://php.net";
+		//$topNumber = 10;
 		
 		// Step 1 - get Page
 		$crawler = new Crawler(file_get_contents($url));
