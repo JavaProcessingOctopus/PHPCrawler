@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use AppBundle\Entity\GetTopEntity;
+use AppBundle\Entity\TopEntity;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class GetTopController extends Controller {
@@ -18,7 +18,7 @@ class GetTopController extends Controller {
 	public function newAction(Request $request)
 	{
 		// create a task and give it some dummy data for this example
-		$entity = new GetTopEntity();
+		$entity = new TopEntity();
 		$entity->setUrl('http://php.net');
 		$entity->setTopNumber(10);
 	
@@ -31,9 +31,9 @@ class GetTopController extends Controller {
 		$form->handleRequest($request);
 	
 		if ($form->isSubmitted() && $form->isValid()) {
-			// $em = $this->getDoctrine()->getManager();
-			// $em->persist($entity);
-			// $em->flush();
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($entity);
+			$em->flush();
 			
 			// Build response
 			$responseStr = "";

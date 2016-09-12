@@ -3,12 +3,33 @@
 namespace AppBundle\Entity;
 
 use Symfony\Component\DomCrawler\Crawler;
+use Doctrine\ORM\Mapping as ORM;
 
-class GetTopEntity {
-    protected $url;
-    protected $topNumber;
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="Top")
+ */
+class TopEntity {
+	/**
+	 * @ORM\Column(type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
+	
+	/**
+	 * @ORM\Column(type="string", length=2083)
+	 */
+    private $url;
+    /**
+     * @ORM\Column(type="integer", scale=2)
+     */
+    private $topNumber;
     
-    protected $top;
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $top;
 
     public function getUrl() {
         return $this->url;
