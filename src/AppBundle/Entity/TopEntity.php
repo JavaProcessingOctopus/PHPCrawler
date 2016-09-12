@@ -27,7 +27,7 @@ class TopEntity {
     private $topNumber;
     
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     private $top;
 
@@ -62,7 +62,7 @@ class TopEntity {
     	}));
     		// Step 2 - Put all words in a word & number map
     		$map = array_count_values(
-    				preg_split("/[\s,]+/", $raw)
+    				preg_split("/[\s,;.?!:']+/", $raw)
     				);
     		// Step 2.1 - Keep only words longer than 3
     		$map = array_filter($map, array($this, 'wordPostFilter'), ARRAY_FILTER_USE_KEY);
