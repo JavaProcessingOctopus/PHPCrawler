@@ -48,7 +48,7 @@ class GetTopEntity {
     		
     		arsort( $map );
     		// Step 3 - Get top 10 from map and set attribute
-    		$this->top = array_slice ( $map, 0, $this->topNu );
+    		$this->top = array_slice ( $map, 0, $this->topNumber );
     }
     
     private function wordPostFilter($word) { return strlen($word) >3; }
